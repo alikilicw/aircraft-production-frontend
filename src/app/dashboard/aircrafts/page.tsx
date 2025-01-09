@@ -102,7 +102,7 @@ const AircraftList = () => {
                             id="select1"
                             className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            <option>Select a Part Model</option>
+                            <option>Select an Aircraft Model</option>
                             {aircraftModels &&
                                 aircraftModels!.map((aircraftModel, aircraftModelIndex) => (
                                     <option key={aircraftModelIndex} value={aircraftModel.id}>
