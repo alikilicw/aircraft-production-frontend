@@ -38,6 +38,8 @@ export default class Request {
         endpoint?: string
         useToken?: boolean
     }) {
+        console.log(ROOT_URL, 'ROOT_URL');
+        
         const response = await fetch(ROOT_URL + endpoint, {
             method: 'POST',
             headers: Request.getHeaders(useToken),
