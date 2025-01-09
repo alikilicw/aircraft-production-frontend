@@ -7,28 +7,18 @@ import Image from 'next/image'
 import SidebarItem from '@/components/Sidebar/SidebarItem'
 import ClickOutside from '@/components/ClickOutside'
 import useLocalStorage from '@/hooks/useLocalStorage'
-import { Entity } from '@/types/entity'
 
 interface SidebarProps {
     sidebarOpen: boolean
     setSidebarOpen: (arg: boolean) => void
-    entities: Entity[]
 }
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen, entities }: SidebarProps) => {
-    const pathname = usePathname()
+const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     const [pageName, setPageName] = useLocalStorage('selectedMenu', 'dashboard')
 
-    const menuGroups = [
-        {
-            name: 'ENTITIES',
-            menuItems: [
-                ...entities.map((entity) => ({
-                    label: entity.name,
-                    route: `/dashboard/${entity.slug}`
-                }))
-            ]
-        }
+    const actionGroups = [
+        { name: 'Part Models', slug: 'part-models' },
+        { name: 'Aircrafts', slug: 'aircrafts' }
     ]
 
     return (
@@ -65,21 +55,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, entities }: SidebarProps) => {
                 <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
                     {/* <!-- Sidebar Menu --> */}
                     <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
-                        {menuGroups.map((group, groupIndex) => (
-                            <div key={groupIndex}>
-                                <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">{group.name}</h3>
-
-                                <ul className="mb-6 flex flex-col gap-1.5">
-                                    {group.menuItems.map((menuItem, menuIndex) => (
-                                        <SidebarItem
-                                            key={menuIndex}
-                                            item={menuItem}
-                                            pageName={pageName}
-                                            setPageName={setPageName}
-                                        />
-                                    ))}
-                                </ul>
-                            </div>
+                        <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">Actions</h3>
+                        {actionGroups.map((group, groupIndex) => (
+                            <ul className="mb-6 flex flex-col gap-1.5" key={groupIndex}>
+                                <SidebarItem item={group} pageName={pageName} setPageName={setPageName} />
+                            </ul>
                         ))}
                     </nav>
                     {/* <!-- Sidebar Menu --> */}

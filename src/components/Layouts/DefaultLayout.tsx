@@ -14,7 +14,6 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
     const token = useTokenCheck()
     const [tokenVerified, setTokenVerified] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [entities, setEntities] = useState<Entity[]>([])
 
     useEffect(() => {
         console.log('A')
@@ -29,30 +28,10 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         if (token != 'unset') verifyToken()
     }, [token])
 
-    useEffect(() => {
-        console.log('B')
-
-        const getEntities = async () => {
-            try {
-                const response = await Request.get({ endpoint: '/entities' })
-                setEntities(response.data as Entity[])
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        if (tokenVerified) getEntities()
-    }, [tokenVerified])
-
-    useEffect(() => {
-        console.log('C')
-
-        if (entities.length > 0) setLoading(false)
-    }, [entities])
-
     return (
         <>
             <div className="flex">
-                <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} entities={entities} />
+                <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
                 <div className="relative flex flex-1 flex-col lg:ml-72.5">
                     <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

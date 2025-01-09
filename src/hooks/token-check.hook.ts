@@ -26,7 +26,8 @@ const useTokenCheck = (): Token => {
                 console.log('whoami check')
 
                 try {
-                    const response = await Request.get({ endpoint: '/auth/whoami' })
+                    const response = await Request.get({ endpoint: '/users/whoami' })
+                    console.log(response)
 
                     setKeyValue('currentUser', response.data)
                     setToken(token)

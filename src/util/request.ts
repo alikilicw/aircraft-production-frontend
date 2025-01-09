@@ -1,5 +1,7 @@
 import ReduxState from './redux-state'
 
+const ROOT_URL = process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL + '/api/v1'
+
 export default class Request {
     private static getHeaders(useToken: boolean): HeadersInit {
         const headers: HeadersInit = {
@@ -7,25 +9,21 @@ export default class Request {
         }
 
         if (useToken) {
-            headers['Authorization'] = 'Bearer ' + ReduxState.getToken()
+            headers['Authorization'] = 'Token ' + ReduxState.getToken()
         }
 
         return headers
     }
 
     public static async get({ endpoint = '', useToken = true }: { endpoint?: string; useToken?: boolean }) {
-        const response = await fetch('http://localhost:5000/api/v1' + endpoint, {
+        const response = await fetch(ROOT_URL + endpoint, {
             method: 'GET',
             headers: Request.getHeaders(useToken)
         })
 
         const result = await response.json()
-
         if (!response.ok) {
-            console.log(result)
-            console.log(Request.getHeaders(useToken))
-
-            throw new Error(result.message || 'Failed to fetch user info')
+            throw new Error(String(result))
         }
 
         return result
@@ -36,14 +34,30 @@ export default class Request {
         endpoint = '',
         useToken = true
     }: {
-        body: unknown
+        body?: unknown
         endpoint?: string
         useToken?: boolean
     }) {
-        const response = await fetch('http://localhost:5000/api/v1' + endpoint, {
+        const response = await fetch(ROOT_URL + endpoint, {
             method: 'POST',
             headers: Request.getHeaders(useToken),
             body: JSON.stringify(body)
+        })
+
+        const result = await response.json()
+        console.log(result, 'result')
+
+        if (!response.ok) {
+            throw new Error(String(result))
+        }
+
+        return result
+    }
+
+    public static async patch({ endpoint = '', useToken = true }: { endpoint?: string; useToken?: boolean }) {
+        const response = await fetch(ROOT_URL + endpoint, {
+            method: 'PATCH',
+            headers: Request.getHeaders(useToken)
         })
 
         const result = await response.json()
@@ -51,9 +65,23 @@ export default class Request {
         if (!response.ok) {
             console.log(result)
 
-            throw new Error(result.message || 'Failed to post request.')
+            if ('errors' in result) {
+                throw new Error(String(result.errors[0]))
+            }
         }
 
         return result
+    }
+
+    public static async delete({ endpoint = '', useToken = true }: { endpoint?: string; useToken?: boolean }) {
+        const response = await fetch(ROOT_URL + endpoint, {
+            method: 'DELETE',
+            headers: Request.getHeaders(useToken)
+        })
+
+        if (!response.ok) {
+            const result = await response.json()
+            throw new Error(String(result))
+        }
     }
 }

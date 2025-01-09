@@ -9,7 +9,7 @@ interface PopupProps {
 const Popup1: React.FC<PopupProps> = ({ message, isVisible, textColor }) => {
     return (
         <div
-            className={`fixed top-10 right-10 rounded-sm border bg-opacity-50 transition-opacity duration-500 ease-out ${
+            className={`fixed top-10 right-10 z-999 rounded-sm border bg-opacity-50 transition-opacity duration-500 ease-out ${
                 isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
         >

@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+    aircraft-nextjs:
+        container_name: aircraft-nextjs
+        build:
+            context: .
+        ports:
+            - '3000:3000'

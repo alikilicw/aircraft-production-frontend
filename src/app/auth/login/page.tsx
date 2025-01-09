@@ -31,7 +31,7 @@ const SignIn: React.FC = () => {
     useEffect(() => {
         const verifyToken = async () => {
             if (token != 'invalid') {
-                router.push('/dashboard')
+                router.push('/dashboard/part-models')
             }
         }
         if (token != 'unset') verifyToken()
@@ -49,18 +49,18 @@ const SignIn: React.FC = () => {
         e.preventDefault()
 
         try {
-            const response = await Request.post({ body: formData, endpoint: '/auth/login', useToken: false })
+            const response = await Request.post({ body: formData, endpoint: '/users/login/', useToken: false })
+            console.log(response)
 
             setResponseMessage(response.message)
             setLoginSuccess(true)
 
-            localStorage.setItem('authToken', response.data.token)
+            localStorage.setItem('authToken', response.token)
 
-            setKeyValue('authToken', response.data.token)
-            setKeyValue('currentUser', response.data.user)
+            setKeyValue('authToken', response.token)
 
             setTimeout(() => {
-                router.push('/dashboard')
+                router.push('/dashboard/part-models')
             }, 2000)
         } catch (error) {
             if (error instanceof Error) setResponseMessage(error.message)
@@ -85,25 +85,6 @@ const SignIn: React.FC = () => {
                 <div className="flex flex-wrap items-center">
                     <div className="hidden w-full xl:block xl:w-1/2">
                         <div className="px-26 py-17.5 text-center">
-                            <Link className="mb-5.5 inline-block" href="/">
-                                <Image
-                                    className="hidden dark:block"
-                                    src={'/images/logo/logo.svg'}
-                                    alt="Logo"
-                                    width={176}
-                                    height={32}
-                                />
-                                <Image
-                                    className="dark:hidden"
-                                    src={'/images/logo/logo-dark.svg'}
-                                    alt="Logo"
-                                    width={176}
-                                    height={32}
-                                />
-                            </Link>
-
-                            <p className="2xl:px-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.</p>
-
                             <span className="mt-15 inline-block">
                                 <svg
                                     width="350"
@@ -226,7 +207,7 @@ const SignIn: React.FC = () => {
                     <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                             <h2 className="mb-4 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                                Sign In to TailAdmin
+                                Personnel Sign In
                             </h2>
 
                             <form onSubmit={handleSubmit}>
