@@ -38,8 +38,8 @@ export default class Request {
         endpoint?: string
         useToken?: boolean
     }) {
-        console.log(ROOT_URL, 'ROOT_URL');
-        
+        console.log(ROOT_URL, 'ROOT_URL')
+
         const response = await fetch(ROOT_URL + endpoint, {
             method: 'POST',
             headers: Request.getHeaders(useToken),
@@ -47,7 +47,7 @@ export default class Request {
         })
 
         const result = await response.json()
-        console.log(result, 'result')
+        console.log(result, 'resultt')
 
         if (!response.ok) {
             throw new Error(String(result))
@@ -65,11 +65,13 @@ export default class Request {
         const result = await response.json()
 
         if (!response.ok) {
-            console.log(result)
+            console.log(result, 'RESULT')
 
-            if ('errors' in result) {
-                throw new Error(String(result.errors[0]))
+            if (typeof result == 'object') {
+                if ('errors' in result) throw new Error(String(result.errors[0]))
             }
+
+            throw new Error(result)
         }
 
         return result
