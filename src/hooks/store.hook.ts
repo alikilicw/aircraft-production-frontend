@@ -5,7 +5,7 @@ export const useShortTermStorage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const shortTermStorage = useSelector((state: RootState) => state.dynamic)
 
-    const getKeyValue = (key: string): string => {
+    const getKeyValue = <T>(key: string): T => {
         return shortTermStorage.storage[key]
     }
 

@@ -57,6 +57,8 @@ const SignIn: React.FC = () => {
 
             localStorage.setItem('authToken', response.token)
 
+            console.log(response)
+
             setKeyValue('authToken', response.token)
 
             setTimeout(() => {

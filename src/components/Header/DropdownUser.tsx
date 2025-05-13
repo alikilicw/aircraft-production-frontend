@@ -1,20 +1,31 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ClickOutside from '@/components/ClickOutside'
 import Request from '@/util/request'
 import { useRouter } from 'next/navigation'
+import { useShortTermStorage } from '@/hooks/store.hook'
+import { Personnel } from '@/types/personnel'
 
 const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const router = useRouter()
+    const { getKeyValue, deleteKey } = useShortTermStorage()
+    const [personnel, setPersonnel] = useState<Personnel>()
+
+    useEffect(() => {
+        setPersonnel(getKeyValue('currentUser'))
+    }, [getKeyValue('currentUser')])
 
     const logout = async () => {
         try {
             await Request.post({ endpoint: '/users/logout/', useToken: true })
             localStorage.setItem('authToken', '')
-            router.push('/auth/login')
+            deleteKey('authToken')
+            setTimeout(() => {
+                router.push('/auth/login')
+            }, 1000)
         } catch (error) {
             console.log(error)
         }
@@ -24,8 +35,10 @@ const DropdownUser = () => {
         <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
             <Link onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-4" href="#">
                 <span className="hidden text-right lg:block">
-                    <span className="block text-sm font-medium text-black dark:text-white">Personel</span>
-                    <span className="block text-xs">Personel</span>
+                    <span className="block text-sm font-medium text-black dark:text-white">
+                        {personnel && personnel?.user.username}
+                    </span>
+                    <span className="block text-xs">{personnel && personnel.team_name}</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">

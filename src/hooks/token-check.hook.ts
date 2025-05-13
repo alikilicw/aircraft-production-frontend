@@ -11,7 +11,7 @@ const useTokenCheck = (): Token => {
     useEffect(() => {
         const tokenCheck = async () => {
             let token
-            const tokenFromRedux = getKeyValue('authToken')
+            const tokenFromRedux = getKeyValue<string>('authToken')
             if (tokenFromRedux) token = tokenFromRedux
             else {
                 const tokenFromLocalStorage = localStorage.getItem('authToken')
@@ -27,9 +27,9 @@ const useTokenCheck = (): Token => {
 
                 try {
                     const response = await Request.get({ endpoint: '/users/whoami' })
-                    console.log(response)
+                    console.log(response, 'RESPONSE')
 
-                    setKeyValue('currentUser', response.data)
+                    setKeyValue('currentUser', response)
                     setToken(token)
                 } catch (error) {
                     setToken('invalid')

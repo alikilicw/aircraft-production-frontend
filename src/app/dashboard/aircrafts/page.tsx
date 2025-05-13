@@ -76,7 +76,10 @@ const AircraftList = () => {
 
             getAircrafts()
         } catch (error) {
-            if (error instanceof Error) setResponseMessage(error.message)
+            if (error instanceof Error) {
+                setResponseMessage(error.message)
+            }
+
             showPopupFunc()
         }
     }

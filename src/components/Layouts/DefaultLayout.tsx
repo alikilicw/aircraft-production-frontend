@@ -3,9 +3,7 @@ import React, { useState, ReactNode, useEffect } from 'react'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
 import useTokenCheck from '@/hooks/token-check.hook'
-import { Entity } from '@/types/entity'
 import { useRouter } from 'next/navigation'
-import Request from '@/util/request'
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false)
